@@ -1,13 +1,11 @@
 
 from fastapi import FastAPI
 from fastapi_versioning import VersionedFastAPI, version
-from pydantic import BaseModel
 import fpl_stats
 import asyncio
-import aiohttp
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-
+import json
 
 
 #########################
@@ -64,7 +62,7 @@ def get_team_history(user_id):
 def get_user_info(user_id):
     data = asyncio.run(fpl_stats.get_user_summary(user_id))
     
-    return JSONResponse(content={"details": data}, headers=headers)
+    return JSONResponse(content={"details": json.loads(data)}, headers=headers)
 
 @app.get("/season_history/{user_id}")
 @version(1)
